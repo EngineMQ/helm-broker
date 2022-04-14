@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "enginemq-broker.fullname" . }}
+  labels:
+    {{- include "enginemq-broker.labels" . | nindent 4 }}
+spec:
+  type: ClusterIP
+  ports:
+    - port: {{ .Values.service.portMq }}
+      targetPort: {{ .Values.service.portMq }}
+      protocol: TCP
+      name: mq
+{{- if .Values.service.enableWebUI }}
+    - port: {{ .Values.service.portWebUI }}
+      targetPort: {{ .Values.service.portWebUI }}
+      protocol: TCP
+      name: web
+{{- end }}
+  selector:
+    {{- include "enginemq-broker.selectorLabels" . | nindent 4 }}
