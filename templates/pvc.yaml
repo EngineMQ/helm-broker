@@ -2,7 +2,7 @@
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: {{ include "enginemq-broker.serviceAccountName" . }}
+  name: {{ include "enginemq-broker.fullname" . }}
   labels:
     {{- include "enginemq-broker.labels" . | nindent 4 }}
 spec:

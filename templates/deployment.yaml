@@ -22,7 +22,6 @@ spec:
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      serviceAccountName: {{ include "enginemq-broker.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:
@@ -68,6 +67,10 @@ spec:
           {{- else }}
             - name: STORAGE
               value: "null()"
+          {{- end }}
+          {{- if .Values.resourceOrigin }}
+            - name: RESOURCE_ORIGIN
+              value: "github(repo={{ .Values.resourceOrigin.repo }} token={{ .Values.resourceOrigin.token }} branch={{ .Values.resourceOrigin.branch }} folder={{ .Values.resourceOrigin.folder }})"
           {{- end }}
       volumes:
         - name: brokerdata
